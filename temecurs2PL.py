@@ -77,7 +77,7 @@ except IndexError:
     print("\nOption not available. Please make sure you only select a number between 1 and 5!")
 
 
-#Version 2
+#Exercise 5 - Version 2
 # print("Exercise 5:")
 # menu_item = ["1 - Afisare lista de cumparaturi","2 - Adaugare element","3 - Stergere element","4 - Stergere lista de cumparaturi"
 #     ,"5 - Cautare in lista de cumparaturi"]
