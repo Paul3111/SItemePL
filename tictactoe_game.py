@@ -64,7 +64,7 @@ def game():
                     or find_winner(robot_moves_list, winning_combination8):
                 print(f"Hey, {player_name.title()}, YOU LOST and Robo won!")
                 break
-            elif player_moves_list not in winning_combinations and robot_moves_list not in winning_combinations:
+            elif rounds < 9:
                 if preferred_positions1:
                     robot_choice = random.choice(preferred_positions1)
                 else:
