@@ -15,8 +15,6 @@ def game():
     winning_combination6 = [3, 6, 9]  # if player fills 3 6 9 in any order (vertical)
     winning_combination7 = [1, 5, 9]  # if player fills 1 5 9 in any order (diagonal)
     winning_combination8 = [3, 5, 7]  # if player fills 3 5 7 in any order (diagonal)
-    winning_combinations = [winning_combination1, winning_combination2, winning_combination3, winning_combination4,
-                            winning_combination5, winning_combination6, winning_combination7, winning_combination8]
 
     preferred_positions1 = [1, 3, 5, 7, 9]  # used to select from this list first (robot)
     preferred_positions2 = [2, 4, 6, 8]     # used to select from this list last (robot)
