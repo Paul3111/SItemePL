@@ -12,18 +12,26 @@ for letter in selected_word:     # tests if chosen letter repeats within the wor
     if selected_word[0].count(letter) > 0:
         print(selected_word.index(letter))
         print(f"The index is: {selected_word.index(letter)}")
-        print(f"the first letter is: {selected_word[0]}")
+        print(f"the first letter is: {selected_word[0].title()}")
 
     elif selected_word[-1].count(letter) > 0:
+        rest_of_word = []
+        print(f"The letter was found {selected_word.count(letter)} times.")
         print(f"The index is: {selected_word.index(letter)}")
-        print(f"the last letter is: {selected_word[-1]}")
+        print(f"the last letter is: {selected_word[-1].title()}")
+        if selected_word.find(selected_word[-1]):
+            print(selected_word.replace(selected_word[-1], "_"))
+            rest_of_word.append(selected_word[-1])
+        # for hidden not in selected_word[1:-1]:
 
     else:
-        rest_of_word = ""
+        rest_of_word = []
         for hidden in selected_word[1:-1]:
             rest_of_word += "_"
 
-print(f"The word that needs to be guessed is: {selected_word[0].upper() + rest_of_word + selected_word[-1].upper()}")
+
+# print(f"The word that needs to be guessed is: {selected_word[0].upper() + rest_of_word + selected_word[-1].upper()}")
+print(f"The word that needs to be guessed is: {selected_word[0].upper() + str(rest_of_word) + selected_word[-1].upper()}")
 
 
 # print("guess".index("s"))
