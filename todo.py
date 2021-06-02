@@ -12,7 +12,7 @@ import os
 print("\n\t\tHi,", os.getlogin(), "! Let's begin!\n")
 
 
-def save_category(text: str) -> TextIO:     # not sure what TextIO is...
+def save_category(text: str) -> TextIO:
     with open("categories.txt", "r+") as file1:
         temp_list = []
         for line_cat in file1.read().splitlines():  # made with temporary list because I had issues with partial words
@@ -44,7 +44,7 @@ def adding_to_category(task: str) -> str:
 
 
 def save_other_info(task: str, person: str, category: str,
-                    date: datetime = (datetime.datetime.today() + datetime.timedelta(days=1))) -> dict:
+                    date=(datetime.datetime.today() + datetime.timedelta(days=1))) -> dict:
     data = {"task": task, "date": date, "person": person, "category": category}
     with open("other_info.txt", "a+") as file4:
         file4.write(task+","+person+","+category+","+str(date)+"\n")
@@ -194,9 +194,6 @@ def data_display(operation_type: int) -> int:
 
 
 categories_list = []
-# categories = str(input('Please type your "to do" categories (Press Q to stop): \n |>>> '))
-# categories_list.append(categories.title().strip())
-# save_category(categories)
 
 while True:
     categories = str(input('Please type your "TO DO" categories (Press Q to move to the next step): \n |>>> '))
@@ -261,9 +258,8 @@ while True:
     print("\nWhat category would you like to place this task into (type the category name)?\n")
     display_categories_from_file()
     time.sleep(0.5)
-    task_category = input(" \n |>>> ")  # If I don't declare it here, I get an error message
-    task_category = adding_to_category(task_category)   # forces task_category to update...
-    # adding_to_category(task_category)   # and the updated value is used here and added to the file on drive
+    task_category = input(" \n |>>> ")
+    task_category = adding_to_category(task_category)
     save_other_info(task_text.upper(), assigned_to.upper(), task_category.upper(), task_date)   # sorting issues 1, A, a
 
 
@@ -304,7 +300,8 @@ while True:
             m = max(longest_list) + 10
             print("\nThe list of items is:\n")
             print(f"LINE [x]" + " " * (int(m / 5) - 4), "TASK" + " " * (int(m / 5) - 4),
-                  "PERSON" + " " * (int(m / 5) - 6), "CATEGORY"+ " " * (int(m / 5) - 8), "DATE" + " " * (int(m / 5) - 4))
+                  "PERSON" + " " * (int(m / 5) - 6), "CATEGORY" + " " * (int(m / 5) - 8),
+                  "DATE" + " " * (int(m / 5) - 4))
             print("-" * m)
             display_edit_list = [print(f"Line [{position}] : {x}", end="") for position, x in enumerate(c, start=0)]
 
@@ -323,5 +320,5 @@ while True:
             print("You will go back to the previous menu.")
             time.sleep(1)
     else:
-        print("Goodbye!")
+        print("\n\t\tGoodbye!")
         break
