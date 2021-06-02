@@ -210,7 +210,7 @@ while True:
         break
 
 
-print('\nPress "R" to see your recent categories or "A" to see all categories saved on file):')
+print('\nPress "R" to see your recent categories or "A" to see all categories (saved on file):')
 time.sleep(1)
 wait_for_user = input(" \n |>>> ")
 if wait_for_user.lower() == "a":
@@ -227,11 +227,15 @@ while True:
     task_text = input("\n\t\t\t\tPlease add your task (Press Q to exit): \n |>>> ")
     with open("other_info.txt", "r+") as file_t:
         check_duplicate_task = []
-        lines_t = file_t.read()
+        lines_t = file_t.readlines()
         for line_t in lines_t:
-            line_t = list(line_t.split(","))
-            check_duplicate_task.append(line_t)
+            check_duplicate_task.append(line_t.split(",")[0])
 
+        first_item_each_line = []
+        for line_index in range(len(lines_t)):
+            first_item_each_line.append(check_duplicate_task[line_index])
+
+        # print(first_item_each_line)
     if task_text.lower() == "q":
         print("\nSee you later!")
         break
