@@ -3,8 +3,7 @@ import time
 from typing import TextIO
 import os
 
-# filtrarea sa fie doar pe coloana respectiva
-# testeaza argumentul optional
+# testeaza argumentul optional datetime
 # limit task length to 30 characters
 # add a header to other_info and always display the header when you display the lists?
 # arrange the info when you display the lists with split at comma and join with another character? (see above)
@@ -140,18 +139,18 @@ def sort_data(sorter: int, asc_or_desc: bool) -> list:
         return sorted_list
 
 
-def filter_data(filter_by: str, accurate: str) -> list:
+def filter_data(filter_by: str, accurate: str, filter_column: int) -> list:
     with open("other_info.txt", "r+") as filter_file:
         main_list_filter = []
         b = filter_file.readlines()
         if accurate.lower() == "y":
             for line3 in b:
-                line3 = list(line3.split(","))  # for accurate searches
-                main_list_filter.append(line3)
+                line3 = line3.split(",")[filter_column]
+                main_list_filter.append(line3) # for accurate searches (works but doesn't return the entire line)
         else:
             for line3 in b:
                 main_list_filter.append(line3)
-
+        # print(main_list_filter)
         for line2 in main_list_filter:
             if filter_by.upper() in line2:
                 print(line2)
@@ -180,13 +179,13 @@ def data_display(operation_type: int) -> int:
     elif operation_type == 9:
         sort_data(3, True)
     elif operation_type == 10:
-        filter_data(filter_word, accurate_check)  # these aren't really needed since I search in all sub-lists
+        filter_data(filter_word, accurate_check, 0)
     elif operation_type == 11:
-        filter_data(filter_word, accurate_check)  # can be pass (if I change line 230)
+        filter_data(filter_word, accurate_check, 3)
     elif operation_type == 12:
-        filter_data(filter_word, accurate_check)  # can be pass (if I change line 230)
+        filter_data(filter_word, accurate_check, 1)
     elif operation_type == 13:
-        filter_data(filter_word, accurate_check)  # can be pass (if I change line 230)
+        filter_data(filter_word, accurate_check, 2)
     else:
         print("Invalid selection. Please try again!")
         pass
@@ -234,7 +233,7 @@ while True:
         first_column = []
         for line_index in range(len(lines_t)):
             first_column.append(check_duplicate_task[line_index])
-            # pprint()
+
     if task_text.lower() == "q":
         print("\nSee you later!")
         break
@@ -281,7 +280,7 @@ while True:
         filter_type = input("\nSelect a filter from the menu (number from list): \n |>>> ")
         filter_word = input("\nFilter by (please type word): \n |>>> ")
         accurate_check = input('\nPress "Y" for a 100% match or any other key for an approximate match: \n |>>> ')
-        data_display(int(filter_type))  # or call filter_data function from here
+        data_display(int(filter_type))
     else:
         break
 
