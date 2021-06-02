@@ -3,6 +3,9 @@ import time
 from typing import TextIO
 import os
 
+# filtrarea sa fie doar pe coloana respectiva
+# testeaza argumentul optional
+# limit task length to 30 characters
 # add a header to other_info and always display the header when you display the lists?
 # arrange the info when you display the lists with split at comma and join with another character? (see above)
 
@@ -150,7 +153,7 @@ def filter_data(filter_by: str, accurate: str) -> list:
                 main_list_filter.append(line3)
 
         for line2 in main_list_filter:
-            if filter_by in line2:
+            if filter_by.upper() in line2:
                 print(line2)
     return main_list_filter
 
@@ -234,8 +237,7 @@ while True:
         first_column = []
         for line_index in range(len(lines_t)):
             first_column.append(check_duplicate_task[line_index])
-
-        # print(first_item_each_line)
+            # pprint()
     if task_text.lower() == "q":
         print("\nSee you later!")
         break
