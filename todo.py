@@ -231,16 +231,16 @@ while True:
         for line_t in lines_t:
             check_duplicate_task.append(line_t.split(",")[0])
 
-        first_item_each_line = []
+        first_column = []
         for line_index in range(len(lines_t)):
-            first_item_each_line.append(check_duplicate_task[line_index])
+            first_column.append(check_duplicate_task[line_index])
 
         # print(first_item_each_line)
     if task_text.lower() == "q":
         print("\nSee you later!")
         break
 
-    if task_text.upper() in lines_t:
+    if task_text.upper() in first_column:
         print("\nThis task is already in the system. Please try another one!\n")
         continue
     file_t.close()
