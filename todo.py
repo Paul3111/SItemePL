@@ -3,11 +3,6 @@ import time
 from typing import TextIO
 import os
 
-# testeaza argumentul optional datetime
-# limit task length to 30 characters
-# add a header to other_info and always display the header when you display the lists?
-# arrange the info when you display the lists with split at comma and join with another character? (see above)
-
 print("\n\t\tHi,", os.getlogin(), "! Let's begin!\n")
 
 
@@ -44,6 +39,7 @@ def adding_to_category(task: str) -> str:
 
 def save_other_info(task: str, person: str, category: str,
                     date=(datetime.datetime.today() + datetime.timedelta(days=1))) -> dict:
+    # default date only needed if I remove the Try Except at from line 251
     data = {"task": task, "date": date, "person": person, "category": category}
     with open("other_info.txt", "a+") as file4:
         file4.write(task+","+person+","+category+","+str(date)+"\n")
@@ -241,6 +237,11 @@ while True:
     if task_text.upper() in first_column:
         print("\nThis task is already in the system. Please try another one!\n")
         continue
+
+    task_length = 30
+    if len(task_text) > task_length:
+        print(f"The task length is too long (a maximum of {task_length} characters allowed. Please try again!")
+        continue
     file_t.close()
 
     try:
@@ -259,7 +260,7 @@ while True:
     time.sleep(0.5)
     task_category = input(" \n |>>> ")
     task_category = adding_to_category(task_category)
-    save_other_info(task_text.upper(), assigned_to.upper(), task_category.upper(), task_date)   # sorting issues 1, A, a
+    save_other_info(task_text.upper(), assigned_to.upper(), task_category.upper(), task_date)
 
 
 while True:
