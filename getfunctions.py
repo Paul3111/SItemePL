@@ -121,32 +121,39 @@ def perform_average_set(data_list: list) -> dict:   # will try to do
 while True:
     menu = [print(x) for x in ["1 - Get YEAR", "2 - Get COUNTRY", "3 - Perform AVERAGE", "0 - EXIT"]]
     select_function = int(input("\nSelect function from the menu (0 - EXIT): \n |>>> "))
-    if select_function == 0:
-        print("See you later!")
-        break
-    elif select_function == 1:
-        print(f"\n\t\t>>> You selected [ Get YEAR ] <<<\n")
-        insert_year = input(f"Please type the year: \n |>>> ")
-        print(f"\n The results for year < {insert_year} > are:\n")
-        pprint(get_year_data(insert_year), indent=3, width=50)
-        print ("\n")
-    elif select_function == 2:
-        print(f"\n\t\t>>> You selected [ Get COUNTRY ] <<<\n")
-        insert_country = input(f"Please type the country: \n |>>> ")
-        for key, value in countries_list.items():
-            if insert_country.title() == value.title():
-                insert_country = key
-        print(f"\n The results for country < {insert_country.upper()} > are:\n")
-        pprint(get_country_data(insert_country), indent=3, width=50)
-        print("\n")
-    elif select_function == 3:
-        print(f"\n\t\t>>> You selected [ Perform AVERAGE ] <<<\n")
-        insert_country = input(f"Please type the country: \n |>>> ")
-        print(f"\n The results for country < {insert_country.upper()} > are:\n")
-        for key, value in countries_list.items():
-            if insert_country.title() == value.title():
-                insert_country = key
-        pprint(perform_average(list(insert_country.upper())), indent=3, width=100)
-        print("\n")
-    else:
+    try:
+        if select_function == 0:
+            print("See you later!")
+            break
+        elif select_function == 1:
+            print(f"\n\t\t>>> You selected [ Get YEAR ] <<<\n")
+            insert_year = input(f"Please type the year: \n |>>> ")
+            print(f"\n The results for year < {insert_year} > are:\n")
+            pprint(get_year_data(insert_year), indent=3, width=50)
+            print ("\n")
+        elif select_function == 2:
+            print(f"\n\t\t>>> You selected [ Get COUNTRY ] <<<\n")
+            insert_country = input(f"Please type the country: \n |>>> ")
+            for key, value in countries_list.items():
+                if insert_country.title() == value.title():
+                    insert_country = key
+            print(f"\n The results for country < {insert_country.upper()} > are:\n")
+            pprint(get_country_data(insert_country), indent=3, width=50)
+            print("\n")
+        elif select_function == 3:
+            print(f"\n\t\t>>> You selected [ Perform AVERAGE ] <<<\n")
+            insert_country = input(f"Please type the country: \n |>>> ")
+            print(f"\n The results for country < {insert_country.upper()} > are:\n")
+            for key, value in countries_list.items():
+                if insert_country.title() == value.title():
+                    insert_country = key
+            pprint(perform_average(list(insert_country.upper())), indent=3, width=100)
+            print("\n")
+        else:
+            continue
+    except ValueError:
+        print("\nAn error has occurred. Please try again!\n")
+        continue
+    except IndexError:
+        print ("\nAn error has occurred. Please try again!\n")
         continue
