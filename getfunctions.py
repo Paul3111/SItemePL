@@ -1,8 +1,6 @@
 from pprint import pprint
 from statistics import mean
 
-# test add add try except or if, elif to avoid errors!
-
 description = ('Country', ['2011 ', '2012 ', '2013 ', '2014 ', '2015 ', '2016 ', '2017 ', '2018 ', '2019 '])
 dataset = [('AL', [': ', ': ', ': ', ': ', ': ', ': ', ': ', '84 ', ': ']),
            ('AT', ['75 ', '79 ', '81 ', '81 ', '82 ', '85 ', '89 ', '89 ', '90 ']),
