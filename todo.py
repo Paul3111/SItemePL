@@ -3,6 +3,7 @@ import time
 from typing import TextIO
 import os
 
+
 print("\n\t\tHi,", os.getlogin(), "! Let's begin!\n")
 
 
@@ -86,7 +87,7 @@ def amend_field(line_number: int, field_to_be_amended: int) -> TextIO:
         main_list_amending = []
         lines = file_for_amending.readlines()
         for line8 in lines:
-            line8 = list(line8.split(","))
+            line8 = list(line8.strip().split(","))
             main_list_amending.append(line8)
         file_for_amending.close()
 
@@ -126,13 +127,11 @@ def sort_data(sorter: int, asc_or_desc: bool) -> list:
         main_list = []
         e = display_data_file.readlines()
         for line7 in e:
-            line7 = list(line7.split(","))
+            line7 = list(line7.strip().split(","))
             main_list.append(line7)
-
         sorted_list = sorted(main_list, key=lambda row: row[sorter], reverse=asc_or_desc)
-        for line2 in sorted_list:
-            print(line2)
-        return sorted_list
+        view_sorted_list = [print(x) for x in sorted_list]  # how to get rid of print?
+        return view_sorted_list
 
 
 def filter_data(filter_by: str, accurate: str, filter_column: int) -> list:
@@ -141,184 +140,224 @@ def filter_data(filter_by: str, accurate: str, filter_column: int) -> list:
         b = filter_file.readlines()
         if accurate.lower() == "y":
             for line3 in b:
-                line3 = line3.split(",")[filter_column]
-                main_list_filter.append(line3) # for accurate searches (works but doesn't return the entire line)
-        else:
+                line3 = line3.strip().split(",")
+                if len(line3[filter_column].replace(" ", "")) == len(filter_by.replace(" ", "")):
+                    main_list_filter.append(line3)
+            view_main_list_filter = [print(x) for x in main_list_filter if filter_by.upper().replace(" ", "")
+                                     in x[filter_column].replace(" ", "")]
+        if accurate.lower() != "y":
             for line3 in b:
+                line3 = line3.strip().split(",")
                 main_list_filter.append(line3)
-        # print(main_list_filter)
-        for line2 in main_list_filter:
-            if filter_by.upper() in line2:
-                print(line2)
-    return main_list_filter
+            view_main_list_filter = [print(x) for x in main_list_filter if filter_by.upper() in x[filter_column]]
+
+        return view_main_list_filter
 
 
-def data_display(operation_type: int) -> int:
+def data_display(operation_type: int, word: str = "", accurate: str = "") -> list:
+    a = ""
     if operation_type == 1:
         with open("other_info.txt", "r") as file:
             for line4 in file.readlines():
                 print(line4.strip())
     elif operation_type == 2:
-        sort_data(0, False)
+        a = sort_data(0, False)
     elif operation_type == 3:
-        sort_data(0, True)
+        a = sort_data(0, True)
     elif operation_type == 4:
-        sort_data(1, False)
+        a = sort_data(3, False)
     elif operation_type == 5:
-        sort_data(1, True)
+        a = sort_data(3, True)
     elif operation_type == 6:
-        sort_data(2, False)
+        a = sort_data(1, False)
     elif operation_type == 7:
-        sort_data(2, True)
+        a = sort_data(1, True)
     elif operation_type == 8:
-        sort_data(3, False)
+        a = sort_data(2, False)
     elif operation_type == 9:
-        sort_data(3, True)
+        a = sort_data(2, True)
     elif operation_type == 10:
-        filter_data(filter_word, accurate_check, 0)
+        a = filter_data(word, accurate, 0)
     elif operation_type == 11:
-        filter_data(filter_word, accurate_check, 3)
+        a = filter_data(word, accurate, 3)
     elif operation_type == 12:
-        filter_data(filter_word, accurate_check, 1)
+        a = filter_data(word, accurate, 1)
     elif operation_type == 13:
-        filter_data(filter_word, accurate_check, 2)
+        a = filter_data(word, accurate, 2)
     else:
         print("Invalid selection. Please try again!")
         pass
-    return operation_type
+
+    return a
 
 
 categories_list = []
 
-while True:
-    categories = str(input('Please type your "TO DO" categories (Press Q to move to the next step): \n |>>> '))
-    if categories.title().strip() in categories_list:
-        print(f'\n\tCategory <{categories.upper()}> already exists. Please try another!\n')
-    elif categories.strip() == "":
-        print("A category cannot be empty or space. Please type a category or press Q to exit.")
-    else:
-        categories_list.append(categories.title().strip())
-        save_category(categories)
-    if categories.lower() == "q":
-        categories_list.pop()
-        delete_q()
-        break
 
-
-print('\nPress "R" to see your recent categories or "A" to see all categories (saved on file):')
-time.sleep(1)
-wait_for_user = input(" \n |>>> ")
-if wait_for_user.lower() == "a":
-    display_categories_from_file()
-elif wait_for_user.lower() == "r":
-    display_list_and_select = [print(x, f'{"-" * (30 - (len(x)))}-> ', [position]) for position, x in
-                               enumerate(categories_list, start=1)]
-else:
-    print("Categories will not be displayed! Continuing...")
-    pass
-print("\n")
-
-while True:
-    task_text = input("\n\t\t\t\tPlease add your task (Press Q to exit): \n |>>> ")
-    with open("other_info.txt", "r+") as file_t:
-        check_duplicate_task = []
-        lines_t = file_t.readlines()
-        for line_t in lines_t:
-            check_duplicate_task.append(line_t.split(",")[0])
-
-        first_column = []
-        for line_index in range(len(lines_t)):
-            first_column.append(check_duplicate_task[line_index])
-
-    if task_text.lower() == "q":
-        print("\nSee you later!")
-        break
-
-    if task_text.upper() in first_column:
-        print("\nThis task is already in the system. Please try another one!\n")
-        continue
-
-    task_length = 30
-    if len(task_text) > task_length:
-        print(f"The task length is too long (a maximum of {task_length} characters allowed. Please try again!")
-        continue
-    file_t.close()
-
-    try:
-        task_date = datetime.datetime(int(input("\nTo complete by: \t\n |>>> Year: ")),
-                                      int(input(" |>>> Month: ")),
-                                      int(input(" |>>> Day: ")),
-                                      int(input("\t |>>> Hour: ")),
-                                      int(input("\t |>>> Minute: ")))
-    except ValueError:
-        print("\nIncorrect date. Please try again!")
-        continue
-
-    assigned_to = input("\nWho will be responsible for this task (type name)? \n |>>> ")
-    print("\nWhat category would you like to place this task into (type the category name)?\n")
-    display_categories_from_file()
-    time.sleep(0.5)
-    task_category = input(" \n |>>> ")
-    task_category = adding_to_category(task_category)
-    save_other_info(task_text.upper(), assigned_to.upper(), task_category.upper(), task_date)
-
-
-while True:
-    ask_if_view_sort_data = input('\nDo you wish to visualise/SORT the data on file ("Y" for Yes or '
-                                  'any key to exit)?: \n |>>> ')
-    if ask_if_view_sort_data.lower() == "y":
-        show_sort_filter_menu()
-        user_selection_for_operation = int(input("\nPlease select a number from the menu: \n |>>> "))
-        data_display(user_selection_for_operation)
-    else:
-        break
-
-while True:
-    ask_if_view_filter_data = input('\nDo you wish to visualise/FILTER the data on file ("Y" for Yes or '
-                                    'any key to exit)?\n |>>> ')
-    if ask_if_view_filter_data.lower() == "y":
-        show_sort_filter_menu()
-        filter_type = input("\nSelect a filter from the menu (number from list): \n |>>> ")
-        filter_word = input("\nFilter by (please type word): \n |>>> ")
-        accurate_check = input('\nPress "Y" for a 100% match or any other key for an approximate match: \n |>>> ')
-        data_display(int(filter_type))
-    else:
-        break
-
-
-while True:
-    ask_if_edit = input('\nDo you wish to EDIT a task ("Y" for Yes or any key to exit)?\n |>>> ')
-    if ask_if_edit.lower() == "y":
-        with open("other_info.txt", "r+") as edit_file:
-            c = edit_file.readlines()
-            longest_list = []
-            for line in c:
-                a = len(line)
-                longest_list.append(a)
-                line = list(line.split(","))
-                continue
-            m = max(longest_list) + 10
-            print("\nThe list of items is:\n")
-            print(f"LINE [x]" + " " * (int(m / 5) - 4), "TASK" + " " * (int(m / 5) - 4),
-                  "PERSON" + " " * (int(m / 5) - 6), "CATEGORY" + " " * (int(m / 5) - 8),
-                  "DATE" + " " * (int(m / 5) - 4))
-            print("-" * m)
-            display_edit_list = [print(f"Line [{position}] : {x}", end="") for position, x in enumerate(c, start=0)]
-
-        type_of_edit = input('\nPress "A" to amend a task or "D" to delete it!\n |>>> ')
-        if type_of_edit.lower() == "a":
-            what_to_amend = int(input('Which line would you like to Amend?\n |>>> '))
-            column_items = {"0": "Amend Task", "1": "Amend Person", "2": "Amend Category", "3": "Amend Date"}
-            for key, value in column_items.items():
-                print(f"{key} - {value}")
-            column_to_amend = int(input("What would you like to amend (type number from the above list)?\n |>>> "))
-            amend_field(what_to_amend, column_to_amend)
-        elif type_of_edit.lower() == "d":
-            what_to_delete = int(input('Which line to permanently Delete (first line has index 0)?\n |>>> '))
-            delete_line(what_to_delete)
+def categories_function() -> str:
+    while True:
+        categories = str(input('Please type your "TO DO" categories (Press Q to move to the next step): \n |>>> '))
+        if categories.title().strip() in categories_list:
+            print(f'\n\tCategory <{categories.upper()}> already exists. Please try another!\n')
+        elif categories.strip() == "":
+            print("A category cannot be empty or space. Please type a category or press Q to exit.")
         else:
-            print("You will go back to the previous menu.")
-            time.sleep(1)
+            categories_list.append(categories.title().strip())
+            save_category(categories)
+        if categories.lower() == "q":
+            categories_list.pop()
+            delete_q()
+            break
+    return categories
+
+
+def show_categories_list() -> str:
+    print('\nPress "R" to see your recent categories or "A" to see all categories (saved on file):')
+    time.sleep(1)
+    wait_for_user = input(" \n |>>> ")
+    if wait_for_user.lower() == "a":
+        display_categories_from_file()
+    elif wait_for_user.lower() == "r":
+        [print(x, f'{"-" * (30 - (len(x)))}-> ', [position]) for position, x in enumerate(categories_list, start=1)]
     else:
-        print("\n\t\tGoodbye!")
-        break
+        print("Categories will not be displayed! Continuing...")
+        pass
+    print("\n")
+    return wait_for_user
+
+
+def add_task_data() -> (str, int, str, str):
+    while True:
+        task_text = input("\n\t\t\t\tPlease add your task (Press Q to exit): \n |>>> ")
+        with open("other_info.txt", "r+") as file_t:
+            check_duplicate_task = []
+            lines_t = file_t.readlines()
+            for line_t in lines_t:
+                check_duplicate_task.append(line_t.split(",")[0])
+
+            first_column = []
+            for line_index in range(len(lines_t)):
+                first_column.append(check_duplicate_task[line_index])
+
+        if task_text.lower() == "q":
+            print("\nSee you later!")
+            break
+
+        if task_text.upper() in first_column:
+            print("\nThis task is already in the system. Please try another one!\n")
+            continue
+
+        task_length = 30
+        if len(task_text) > task_length:
+            print(f"The task length is too long (a maximum of {task_length} characters allowed. Please try again!")
+            continue
+        file_t.close()
+
+        try:
+            task_date = datetime.datetime(int(input("\nTo complete by: \t\n |>>> Year: ")),
+                                          int(input(" |>>> Month: ")),
+                                          int(input(" |>>> Day: ")),
+                                          int(input("\t |>>> Hour: ")),
+                                          int(input("\t |>>> Minute: ")))
+        except ValueError:
+            print("\nIncorrect date. Please try again!")
+            continue
+
+        assigned_to = input("\nWho will be responsible for this task (type name)? \n |>>> ")
+        print("\nWhat category would you like to place this task into (type the category name)?\n")
+        display_categories_from_file()
+        time.sleep(0.5)
+        task_category = input(" \n |>>> ")
+        task_category = adding_to_category(task_category)
+        save_other_info(task_text.upper(), assigned_to.upper(), task_category.upper(), task_date)
+        return task_text, task_date, assigned_to, task_category
+
+
+def sort_data_function() -> int:
+    while True:
+        ask_if_view_sort_data = input('\nDo you wish to visualise/SORT the data on file ("Y" for Yes or '
+                                      'any key to exit)?: \n |>>> ')
+        if ask_if_view_sort_data.lower() == "y":
+            show_sort_filter_menu()
+            user_selection_for_operation = int(input("\nPlease select a number from the menu: \n |>>> "))
+            data_display(user_selection_for_operation)
+            return user_selection_for_operation
+        else:
+            break
+
+
+def filter_data_function() -> (str, str, str):
+    while True:
+        ask_if_view_filter_data = input('\nDo you wish to visualise/FILTER the data on file ("Y" for Yes or '
+                                        'any key to exit)?\n |>>> ')
+        if ask_if_view_filter_data.lower() == "y":
+            show_sort_filter_menu()
+            filter_type = input("\nSelect a filter from the menu (number from list): \n |>>> ")
+            filter_word = input("\nFilter by (please type word): \n |>>> ")
+            accurate_check = input('\nPress "Y" for a 100% match or any other key for an approximate match: \n |>>> ')
+            data_display(int(filter_type), filter_word, accurate_check)
+            return filter_type, filter_word, accurate_check
+        else:
+            break
+
+
+def edit_data_function() -> (str, int, int, int):
+    while True:
+        ask_if_edit = input('\nDo you wish to EDIT a task ("Y" for Yes or any key to exit)?\n |>>> ')
+        if ask_if_edit.lower() == "y":
+            with open("other_info.txt", "r+") as edit_file:
+                c = edit_file.readlines()
+                longest_list = []
+                for line in c:
+                    a = len(line)
+                    longest_list.append(a)
+                    list(line.split(","))
+                    continue
+                m = max(longest_list) + 10
+                print("\nThe list of items is:\n")
+                print(f"LINE [x]" + " " * (int(m / 5) - 4), "TASK" + " " * (int(m / 5) - 4),
+                      "PERSON" + " " * (int(m / 5) - 6), "CATEGORY" + " " * (int(m / 5) - 8),
+                      "DATE" + " " * (int(m / 5) - 4))
+                print("-" * m)
+                [print(f"Line [{position}] : {x}", end="") for position, x in enumerate(c, start=0)]
+
+            type_of_edit = input('\nPress "A" to amend a task or "D" to delete it!\n |>>> ')
+            if type_of_edit.lower() == "a":
+                what_to_amend = int(input('Which line would you like to Amend?\n |>>> '))
+                column_items = {"0": "Amend Task", "1": "Amend Person", "2": "Amend Category", "3": "Amend Date"}
+                for key, value in column_items.items():
+                    print(f"{key} - {value}")
+                column_to_amend = int(input("What would you like to amend (type number from the above list)?\n |>>> "))
+                amend_field(what_to_amend, column_to_amend)
+                return column_to_amend
+            elif type_of_edit.lower() == "d":
+                what_to_delete = int(input('Which line to permanently Delete (first line has index 0)?\n |>>> '))
+                delete_line(what_to_delete)
+                return what_to_delete
+            else:
+                print("You will go back to the previous menu.")
+                time.sleep(1)
+        else:
+            print("\n\t\tGoodbye!")
+            break
+
+        return ask_if_edit, type_of_edit
+
+
+run = 0
+ask = ""
+
+while True:
+    if run >= 2:
+        ask = input('\nDo you wish to restart the loop (press "Q" to exit)?\n |>>> ')
+
+    if ask.lower() != "q":
+        categories_function()
+        show_categories_list()
+        add_task_data()
+        sort_data_function()
+        filter_data_function()
+        edit_data_function()
+        if run == 0:
+            ask = input('\nDo you wish to restart UYYUUU loop (press "Q" to exit)?\n |>>> ')
+        run += 1
