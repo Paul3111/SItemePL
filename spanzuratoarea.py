@@ -1,14 +1,13 @@
-# to print updated word as string
-# comprehension lists!
-# check errors
-# draw the little man
-
 import random
 
 secret_word = ["london", "secret", "alaska", "teamwork", "happiness", "homework", "guess", "banana"]
 selected_word = list(random.choice(secret_word))
 players_tried_letters = []
 start_word = []
+
+
+def draw_man():
+    pass
 
 
 def show_partial_word(word_to_be_guessed: list) -> list:
@@ -35,15 +34,15 @@ def run_game() -> None:
     runs = 0
     while runs < 8:
         if updated_word(selected_word) != selected_word and runs == 7:
-            print(f"Sorry {player_name.capitalize()}, you lost! The word was: {selected_word}!")
+            print(f"\nSorry {player_name.capitalize()}, you lost! The word was: {selected_word}!")
             break
         elif updated_word(selected_word) != selected_word:
             guess = input("\nPick a letter: \n |>>> ")
             if guess[:1] not in players_tried_letters:
-                print(updated_word(selected_word, guess))
+                [print(x, end="") for x in updated_word(selected_word, guess)]
                 runs += 1
             else:
-                print("You have already tried this letter! Please try another one!")
+                print("\nYou have already tried this letter! Please try another one!")
                 continue
         elif updated_word(selected_word) == selected_word:
             print(f"\nCongratulations {player_name.capitalize()}! You won!\n")
