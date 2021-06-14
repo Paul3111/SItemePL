@@ -3,7 +3,6 @@ import time
 from typing import TextIO
 import os
 
-
 print("\n\t\tHi,", os.getlogin(), "! Let's begin!\n")
 
 
@@ -359,5 +358,10 @@ while True:
         filter_data_function()
         edit_data_function()
         if run == 0:
-            ask = input('\nDo you wish to restart UYYUUU loop (press "Q" to exit)?\n |>>> ')
+            ask = input('\nDo you wish to restart loop (press "Q" to exit)?\n |>>> ')
+
         run += 1
+    else:
+        print("Adios!")
+        exit()
+
