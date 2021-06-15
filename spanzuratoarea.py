@@ -4,10 +4,37 @@ secret_word = ["london", "secret", "alaska", "teamwork", "happiness", "homework"
 selected_word = list(random.choice(secret_word))
 players_tried_letters = []
 start_word = []
+dict_parts = {"head": "   @", "neck": "  :", "left": " /", "right": "\\", "torso": "  |"}
+
+# trebuie desenat si stalpul la fiecare nivel..
 
 
-def draw_man():
-    pass
+def draw_man(wrong_letter: int) -> str:
+    a = ""
+    if wrong_letter == 0:
+        print("pole")
+        pass    # only print the pole
+    if wrong_letter == 1:
+        a = f'{dict_parts["head"]}'
+    elif wrong_letter == 2:
+        a = f'{dict_parts["head"]} \n {dict_parts["neck"]}'
+    elif wrong_letter == 3:
+        a = f'{dict_parts["head"]} \n {dict_parts["neck"]} \n {dict_parts["left"]}'
+    elif wrong_letter == 4:
+        a = f'{dict_parts["head"]} \n {dict_parts["neck"]} \n {dict_parts["left"]} ' \
+            f'{dict_parts["right"]}'
+    elif wrong_letter == 5:
+        a = f'{dict_parts["head"]} \n {dict_parts["neck"]} \n {dict_parts["left"]}' \
+            f' {dict_parts["right"]} \n {dict_parts["torso"]}'
+    elif wrong_letter == 6:
+        a = f'{dict_parts["head"]} \n {dict_parts["neck"]} \n {dict_parts["left"]}' \
+            f' {dict_parts["right"]} \n {dict_parts["torso"]} \n {dict_parts["left"]}'
+    elif wrong_letter == 7:
+        a = f'{dict_parts["head"]} \n {dict_parts["neck"]} \n {dict_parts["left"]}' \
+            f' {dict_parts["right"]} \n {dict_parts["torso"]} \n {dict_parts["left"]}' \
+            f' {dict_parts["right"]}'
+
+    return a
 
 
 def show_partial_word(word_to_be_guessed: list) -> list:
@@ -32,6 +59,7 @@ def run_game() -> None:
     print(f"\nWelcome, {player_name.capitalize()}!\n")
     print("".join(show_partial_word(selected_word)))
     runs = 0
+    fails = 0
     while runs < 8:
         if updated_word(selected_word) != selected_word and runs == 7:
             print(f"\nSorry {player_name.capitalize()}, you lost! The word was: {selected_word}!")
@@ -39,7 +67,15 @@ def run_game() -> None:
         elif updated_word(selected_word) != selected_word:
             guess = input("\nPick a letter: \n |>>> ")
             if guess[:1] not in players_tried_letters:
+                print("\n")
                 [print(x, end="") for x in updated_word(selected_word, guess)]
+                if guess[:1] not in selected_word:
+                    print("\n")
+                    fails += 1
+                    print(draw_man(fails))
+                else:
+                    print("\n")
+                    print(draw_man(fails))
                 runs += 1
             else:
                 print("\nYou have already tried this letter! Please try another one!")
@@ -59,4 +95,3 @@ while True:
     ask = input('Do you WISH to play another game ("y" for YES or any key for NO)? \n |>>> ')
     if ask.lower() != "y":
         break
-
