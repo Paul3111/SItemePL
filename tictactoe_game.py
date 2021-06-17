@@ -3,7 +3,7 @@ import time
 from tictactoe_functions import print_board_after_move, find_winner
 
 
-def game():
+def game() -> bool:
     board_structure = {1: "--", 2: "--", 3: "--", 4: "--", 5: "--", 6: "--", 7: "--", 8: "--", 9: "--", }
 
     # These are all possible (unique or sorted) winning combinations
@@ -120,3 +120,4 @@ def game():
     else:
         print("\nSee you later!")
         pass
+    return True
