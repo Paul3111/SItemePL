@@ -4,37 +4,27 @@ secret_word = ["london", "secret", "alaska", "teamwork", "happiness", "homework"
 selected_word = list(random.choice(secret_word))
 players_tried_letters = []
 start_word = []
-dict_parts = {"head": "   @", "neck": "  :", "left": " /", "right": "\\", "torso": "  |"}
-
-# trebuie desenat si stalpul la fiecare nivel..
+dict_parts = {1: "@", 2: "/", 3: "\\", 4: "|"}
 
 
 def draw_man(wrong_letter: int) -> str:
-    a = ""
-    if wrong_letter == 0:
-        print("pole")
-        pass    # only print the pole
-    if wrong_letter == 1:
-        a = f'{dict_parts["head"]}'
-    elif wrong_letter == 2:
-        a = f'{dict_parts["head"]} \n {dict_parts["neck"]}'
-    elif wrong_letter == 3:
-        a = f'{dict_parts["head"]} \n {dict_parts["neck"]} \n {dict_parts["left"]}'
-    elif wrong_letter == 4:
-        a = f'{dict_parts["head"]} \n {dict_parts["neck"]} \n {dict_parts["left"]} ' \
-            f'{dict_parts["right"]}'
-    elif wrong_letter == 5:
-        a = f'{dict_parts["head"]} \n {dict_parts["neck"]} \n {dict_parts["left"]}' \
-            f' {dict_parts["right"]} \n {dict_parts["torso"]}'
-    elif wrong_letter == 6:
-        a = f'{dict_parts["head"]} \n {dict_parts["neck"]} \n {dict_parts["left"]}' \
-            f' {dict_parts["right"]} \n {dict_parts["torso"]} \n {dict_parts["left"]}'
-    elif wrong_letter == 7:
-        a = f'{dict_parts["head"]} \n {dict_parts["neck"]} \n {dict_parts["left"]}' \
-            f' {dict_parts["right"]} \n {dict_parts["torso"]} \n {dict_parts["left"]}' \
-            f' {dict_parts["right"]}'
+    a = dict_parts[1] if wrong_letter >= 1 else ""
+    b = dict_parts[2] if wrong_letter >= 2 else ""
+    c = dict_parts[4] if wrong_letter >= 3 else ""
+    d = dict_parts[3] if wrong_letter >= 4 else ""
+    e = dict_parts[4] if wrong_letter >= 5 else ""
+    f = dict_parts[2] if wrong_letter >= 6 else ""
+    g = dict_parts[3] if wrong_letter >= 7 else ""
 
-    return a
+    draw = f"""
+            ---------
+            |       Y
+            |       {a}
+            |     {b} {c} {d}
+            |       {e}
+            |      {f} {g}
+          << >>"""
+    return draw
 
 
 def show_partial_word(word_to_be_guessed: list) -> list:
@@ -66,7 +56,7 @@ def run_game() -> None:
             break
         elif updated_word(selected_word) != selected_word:
             guess = input("\nPick a letter: \n |>>> ")
-            if guess[:1] not in players_tried_letters:
+            if guess[:1] not in players_tried_letters and guess[:1] not in start_word:
                 print("\n")
                 [print(x, end="") for x in updated_word(selected_word, guess)]
                 if guess[:1] not in selected_word:
