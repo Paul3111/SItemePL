@@ -18,7 +18,7 @@ def draw_man(wrong_letter: int) -> str:
 
     draw = f"""
             ---------
-            |       Y
+            |       ^
             |       {a}
             |     {b} {c} {d}
             |       {e}
@@ -56,7 +56,10 @@ def run_game() -> None:
             break
         elif updated_word(selected_word) != selected_word:
             guess = input("\nPick a letter: \n |>>> ")
-            if guess[:1] not in players_tried_letters and guess[:1] not in start_word:
+            if not guess[:1].isalpha():
+                print("\nYou can only select letters!")
+                continue
+            elif guess[:1] not in players_tried_letters and guess[:1] not in start_word:
                 print("\n")
                 [print(x, end="") for x in updated_word(selected_word, guess)]
                 if guess[:1] not in selected_word:
