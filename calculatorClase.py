@@ -10,29 +10,27 @@ class Calculator:
             return str(self.adunare())
         elif self.operation == "-":
             return str(self.scadere())
+        elif self.operation == "*":
+            return str(self.inmultire())
+        elif self.operation == "/":
+            return str(self.impartire())
 
     def adunare(self):
-        # if self.operation == "+":
         return self.nr1 + self.nr2
-            # return rez
 
     def scadere(self):
-        # if operation == "-":
         return self.nr1 - self.nr2
-            # return rez
 
-    def inmultire(self, nr1, operation, nr2):
-        if operation == "*":
-            rez = nr1 * nr2
-            return rez
+    def inmultire(self):
+            return self.nr1 * self.nr2
 
-    def impartire(self, nr1, operation, nr2):
-        if operation == "/":
-            if nr2 == 0:
+    def impartire(self):
+        if self.operation == "/":
+            if self.nr2 == 0:
                 pass
             else:
-                rez = nr1 / nr2
-                return rez
+                return self.nr1 / self.nr2
+
 
 
 calcul_1 = Calculator()
