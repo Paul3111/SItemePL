@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+  <table>
+    <thead>
+      <tr>
+        <th>Index</th>
+        <th>Name</th>
+        <th>Website</th>
+        <th>Company Type</th>
+        <th>Actiune</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for item in companies_list %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ item.name }}</td>
+        <td>{{ item.website }}</td>
+        <td>{{ item.company_type }}</td>
+        <td><a href="{% url 'aplicatie2:modifica' item.id %}">Modifica</a></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
